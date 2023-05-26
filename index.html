@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,18 +34,32 @@
 
           // 显示按钮
           var buttonsContainer = document.getElementById('buttons');
-          buttonsContainer.innerHTML = '<a href="https://github.com/' + username + '/' + repository + '" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" target="_blank">跳转到仓库</a>' +
-                                       '<a href="https://github.com/' + username + '" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" target="_blank">打开作者 GitHub 主页</a>';
+          buttonsContainer.innerHTML = '<a href="https://github.com/' + username + '/' + repository + '" class="mdui-btn mdui-btn-raised mdui-ripple" target="_blank">跳转到仓库</a>' +
+                                       '<a href="https://github.com/' + username + '" class="mdui-btn mdui-btn-raised mdui-ripple" target="_blank">打开作者 GitHub 主页</a>';
         })
         .fail(function(jqXHR) {
+          var errorResponse = jqXHR.responseText.toLowerCase();
+
           if (jqXHR.status === 404) {
             document.getElementById('result').textContent = '仓库可能是私有的或不存在';
+          } else if (errorResponse.includes('rate limit exceed')) {
+            var errorMessage = 'IP被限制，请稍后重试';
+            var rateLimitMessage = 'API rate limit exceeded for';
+            var index = errorResponse.indexOf(rateLimitMessage);
+            if (index !== -1) {
+              var startIndex = index + rateLimitMessage.length;
+              var endIndex = errorResponse.indexOf('.', startIndex);
+              var ipAddress = errorResponse.substring(startIndex, endIndex).trim();
+              errorMessage += '（IP：' + ipAddress + '）';
+            }
+            document.getElementById('result').textContent = errorMessage;
           } else {
             document.getElementById('result').textContent = '出错了：' + jqXHR.responseText;
           }
 
           // 清空按钮
-          document.getElementById('buttons').innerHTML = '';
+          document.getElementById('buttons').innerHTML = '<a href="javascript:void(0);" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" disabled>跳转到仓库</a>' +
+                                                           '<a href="javascript:void(0);" class="mdui-btn mdui-btn-raised mdui-ripple" disabled>打开作者 GitHub 主页</a>';
         });
     }
 
@@ -96,8 +109,11 @@
           <label class="mdui-textfield-label">仓库名</label>
           <input type="text" id="repository" class="mdui-textfield-input" placeholder="仓库名">
         </div>
-        <div id="buttons" class="mdui-m-t-1 mdui-m-b-2"></div>
         <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" onclick="fetchRepositorySize()">获取大小</button>
+        <div id="buttons" class="mdui-m-t-1 mdui-m-b-2">
+          <a href="javascript:void(0);" class="mdui-btn mdui-btn-raised mdui-ripple" disabled>跳转到仓库</a>
+          <a href="javascript:void(0);" class="mdui-btn mdui-btn-raised mdui-ripple" disabled>打开作者 GitHub 主页</a>
+        </div>
       </div>
     </div>
 
