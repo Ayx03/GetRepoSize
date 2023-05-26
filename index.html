@@ -75,7 +75,7 @@
         repositoryInput.focus();
       }
 
-      // 更新打开作者 GitHub 主页按钮的禁用状态
+      // 更新打开该用户 GitHub 主页按钮的禁用状态
       openAuthorButton.disabled = usernameInput.value.trim() === '';
     }
 
@@ -138,7 +138,7 @@
           <div class="mdui-col">
             <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" onclick="fetchRepositorySize()">获取大小</button>
             <a id="openRepoButton" href="javascript:void(0);" class="mdui-btn mdui-btn-raised mdui-ripple mdui-button-spacer" onclick="openRepository()">跳转到仓库</a>
-            <a id="openAuthorButton" href="javascript:void(0);" class="mdui-btn mdui-btn-raised mdui-ripple mdui-button-spacer" onclick="openAuthorPage()">打开作者 GitHub 主页</a>
+            <a id="openAuthorButton" href="javascript:void(0);" class="mdui-btn mdui-btn-raised mdui-ripple mdui-button-spacer" onclick="openAuthorPage()">打开该用户 GitHub 主页</a>
           </div>
         </div>
       </div>
