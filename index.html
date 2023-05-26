@@ -5,6 +5,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdui/0.4.3/css/mdui.min.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mdui/0.4.3/js/mdui.min.js"></script>
+  <style>
+    .mdui-caption {
+      font-size: 14px;
+    }
+  </style>
   <script>
     function fetchRepositorySize() {
       var username = document.getElementById('username').value;
@@ -122,7 +127,7 @@
           </div>
           <div class="mdui-col">
             <a id="openRepoButton" href="javascript:void(0);" class="mdui-btn mdui-btn-raised mdui-ripple">跳转到仓库</a>
-            <a id="openAuthorButton" href="javascript:void(0);" class="mdui-btn mdui-btn-raised mdui-ripple" disabled>打开作者 GitHub 主页</a>
+            <a id="openAuthorButton" href="javascript:void(0);" class="mdui-btn mdui-btn-raised mdui-ripple">打开作者 GitHub 主页</a>
           </div>
         </div>
       </div>
@@ -130,7 +135,7 @@
 
     <div id="result" class="mdui-typo"></div>
 
-    <div class="mdui-typo-caption mdui-text-center">© 2023 - <a href="https://imayx.top/">ImAyx</a></div>
+    <div class="mdui-typo-caption mdui-text-center" style="font-size: 16px;">© 2023 - <a href="https://imayx.top/">ImAyx</a></div>
   </div>
 </body>
 </html>
