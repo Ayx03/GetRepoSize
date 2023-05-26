@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>GitHub Repository Size</title>
+  <title>Get GitHub Repository Size</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdui/0.4.3/css/mdui.min.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mdui/0.4.3/js/mdui.min.js"></script>
@@ -32,19 +32,18 @@
           // 显示仓库大小
           document.getElementById('result').textContent = '仓库大小：' + displaySize;
 
-          // 显示按钮
-          var buttonsContainer = document.getElementById('buttons');
-          buttonsContainer.innerHTML = '<a href="https://github.com/' + username + '/' + repository + '" class="mdui-btn mdui-btn-raised mdui-ripple" target="_blank">跳转到仓库</a>' +
-                                       '<a href="https://github.com/' + username + '" class="mdui-btn mdui-btn-raised mdui-ripple" target="_blank">打开作者 GitHub 主页</a>';
+          // 更新按钮链接
+          document.getElementById('openRepoButton').href = 'https://github.com/' + username + '/' + repository;
+          document.getElementById('openAuthorButton').href = 'https://github.com/' + username;
         })
         .fail(function(jqXHR) {
           var errorResponse = jqXHR.responseText.toLowerCase();
 
           if (jqXHR.status === 404) {
-            document.getElementById('result').textContent = '仓库可能是私有的或不存在';
+            document.getElementById('result').textContent = '仓库可能是私有的或不存在：' + jqXHR.responseText;
           } else if (errorResponse.includes('rate limit exceed')) {
             var errorMessage = 'IP被限制，请稍后重试';
-            var rateLimitMessage = 'API rate limit exceeded for';
+            var rateLimitMessage = 'api rate limit exceeded for';
             var index = errorResponse.indexOf(rateLimitMessage);
             if (index !== -1) {
               var startIndex = index + rateLimitMessage.length;
@@ -56,16 +55,13 @@
           } else {
             document.getElementById('result').textContent = '出错了：' + jqXHR.responseText;
           }
-
-          // 清空按钮
-          document.getElementById('buttons').innerHTML = '<a href="javascript:void(0);" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" disabled>跳转到仓库</a>' +
-                                                           '<a href="javascript:void(0);" class="mdui-btn mdui-btn-raised mdui-ripple" disabled>打开作者 GitHub 主页</a>';
         });
     }
 
     function handleUsernameInput(event) {
       var usernameInput = document.getElementById('username');
       var repositoryInput = document.getElementById('repository');
+      var openAuthorButton = document.getElementById('openAuthorButton');
 
       // 如果输入斜杠，则删除并切换到第二个文本框
       if (event.key === '/') {
@@ -73,6 +69,17 @@
         usernameInput.value = usernameInput.value.replace('/', '');
         repositoryInput.focus();
       }
+
+      // 更新打开作者 GitHub 主页按钮的禁用状态
+      openAuthorButton.disabled = usernameInput.value.trim() === '';
+    }
+
+    function handleRepositoryInput(event) {
+      var repositoryInput = document.getElementById('repository');
+      var openRepoButton = document.getElementById('openRepoButton');
+
+      // 更新跳转到仓库按钮的禁用状态
+      openRepoButton.disabled = repositoryInput.value.trim() === '';
     }
 
     function handlePaste(event) {
@@ -94,7 +101,7 @@
 <body class="mdui-theme-primary-indigo mdui-theme-accent-pink">
   <header class="mdui-appbar mdui-color-theme">
     <div class="mdui-toolbar mdui-container">
-      <a href="#" class="mdui-typo-headline">GitHub Repository Size</a>
+      <a href="#" class="mdui-typo-headline">Get GitHub Repository Size</a>
     </div>
   </header>
 
@@ -107,17 +114,23 @@
         </div>
         <div class="mdui-textfield">
           <label class="mdui-textfield-label">仓库名</label>
-          <input type="text" id="repository" class="mdui-textfield-input" placeholder="仓库名">
+          <input type="text" id="repository" class="mdui-textfield-input" placeholder="仓库名" oninput="handleRepositoryInput(event)">
         </div>
-        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" onclick="fetchRepositorySize()">获取大小</button>
-        <div id="buttons" class="mdui-m-t-1 mdui-m-b-2">
-          <a href="javascript:void(0);" class="mdui-btn mdui-btn-raised mdui-ripple" disabled>跳转到仓库</a>
-          <a href="javascript:void(0);" class="mdui-btn mdui-btn-raised mdui-ripple" disabled>打开作者 GitHub 主页</a>
+        <div class="mdui-row">
+          <div class="mdui-col">
+            <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" onclick="fetchRepositorySize()">获取大小</button>
+          </div>
+          <div class="mdui-col">
+            <a id="openRepoButton" href="javascript:void(0);" class="mdui-btn mdui-btn-raised mdui-ripple">跳转到仓库</a>
+            <a id="openAuthorButton" href="javascript:void(0);" class="mdui-btn mdui-btn-raised mdui-ripple" disabled>打开作者 GitHub 主页</a>
+          </div>
         </div>
       </div>
     </div>
 
     <div id="result" class="mdui-typo"></div>
+
+    <div class="mdui-typo-caption mdui-text-center">© 2023 - <a href="https://imayx.top/">ImAyx</a></div>
   </div>
 </body>
 </html>
