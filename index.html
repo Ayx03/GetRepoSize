@@ -9,6 +9,10 @@
     .mdui-caption {
       font-size: 14px;
     }
+
+    .mdui-button-spacer {
+      margin-right: 8px;
+    }
   </style>
   <script>
     function fetchRepositorySize() {
@@ -36,10 +40,6 @@
 
           // 显示仓库大小
           document.getElementById('result').textContent = '仓库大小：' + displaySize;
-
-          // 更新按钮链接
-          document.getElementById('openRepoButton').href = 'https://github.com/' + username + '/' + repository;
-          document.getElementById('openAuthorButton').href = 'https://github.com/' + username;
         })
         .fail(function(jqXHR) {
           var errorResponse = jqXHR.responseText.toLowerCase();
@@ -101,6 +101,19 @@
         document.getElementById('repository').focus();
       }
     }
+
+    function openRepository() {
+      var username = document.getElementById('username').value;
+      var repository = document.getElementById('repository').value;
+      var repoUrl = 'https://github.com/' + username + '/' + repository;
+      window.open(repoUrl, '_blank');
+    }
+
+    function openAuthorPage() {
+      var username = document.getElementById('username').value;
+      var authorUrl = 'https://github.com/' + username;
+      window.open(authorUrl, '_blank');
+    }
   </script>
 </head>
 <body class="mdui-theme-primary-indigo mdui-theme-accent-pink">
@@ -124,10 +137,8 @@
         <div class="mdui-row">
           <div class="mdui-col">
             <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" onclick="fetchRepositorySize()">获取大小</button>
-          </div>
-          <div class="mdui-col">
-            <a id="openRepoButton" href="javascript:void(0);" class="mdui-btn mdui-btn-raised mdui-ripple">跳转到仓库</a>
-            <a id="openAuthorButton" href="javascript:void(0);" class="mdui-btn mdui-btn-raised mdui-ripple">打开作者 GitHub 主页</a>
+            <a id="openRepoButton" href="javascript:void(0);" class="mdui-btn mdui-btn-raised mdui-ripple mdui-button-spacer" onclick="openRepository()">跳转到仓库</a>
+            <a id="openAuthorButton" href="javascript:void(0);" class="mdui-btn mdui-btn-raised mdui-ripple" onclick="openAuthorPage()">打开作者 GitHub 主页</a>
           </div>
         </div>
       </div>
@@ -135,7 +146,7 @@
 
     <div id="result" class="mdui-typo"></div>
 
-    <div class="mdui-typo-caption mdui-text-center" style="font-size: 16px;">© 2023 - <a href="https://imayx.top/">ImAyx</a></div>
+    <div class="mdui-typo-caption mdui-text-center mdui-m-t-3">© 2023 - <a href="https://imayx.top/">ImAyx</a></div>
   </div>
 </body>
 </html>
