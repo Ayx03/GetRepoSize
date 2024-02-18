@@ -1,2 +1,2 @@
 # GetRepoSize
-Get the size of a GitHub Repository. <https://grs.imayx.top>
+Get the size of a GitHub Repository on a webpage. <https://grs.imayx.top>
